@@ -1,54 +1,21 @@
 import { useRef, useState } from "react";
-import { Button, Form, Container, Row, Col } from "react-bootstrap";
 
-const Signup = () => {
+import { Container, Button, Row, Col, Form } from "react-bootstrap";
+
+const Login = () => {
   const [isSending, setIsSending] = useState(false);
 
   const emailRef = useRef();
   const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
 
-  const submitFormHandler = async (e) => {
-    e.preventDefault();
-
+  const submitFormHandler = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    const confirmPassword = confirmPasswordRef.current.value;
 
     const obj = {
       email,
       password,
-      confirmPassword,
     };
-
-    setIsSending(true);
-
-    try {
-      const res = await fetch("http://localhost:4000/signup", {
-        method: "POST",
-        body: JSON.stringify(obj),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert(data.message);
-      }else {
-        throw new Error(data.message);
-      }
-
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-    emailRef.current.value = "";
-    passwordRef.current.value = "";
-    confirmPasswordRef.current.value = "";
-
-    setIsSending(false);
   };
 
   return (
@@ -64,7 +31,7 @@ const Signup = () => {
             onSubmit={submitFormHandler}
           >
             <Form.Group className="mb-3 text-center" controlId="formTitle">
-              <Form.Label className="h3">Signup</Form.Label>
+              <Form.Label className="h3">Login</Form.Label>
             </Form.Group>
 
             <Form.Group className="mb-3">
@@ -85,22 +52,16 @@ const Signup = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Enter confirm password"
-                ref={confirmPasswordRef}
-              />
-            </Form.Group>
-
             <div className="d-grid gap-2">
               {!isSending && (
                 <Button variant="primary" type="submit" className="mt-3">
-                  Sign Up
+                  Login
                 </Button>
               )}
-              {isSending && <p>Signing Up...</p>}
+              {isSending && <p>Loginning...</p>}
+            </div>
+            <div style={{ "text-align":"right"}}>
+            <p><a href="/signup">Forgot Password</a></p>
             </div>
           </Form>
         </Col>
@@ -109,4 +70,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
