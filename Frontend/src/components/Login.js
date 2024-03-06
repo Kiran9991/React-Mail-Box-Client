@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-
 import { Container, Button, Row, Col, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [isSending, setIsSending] = useState(false);
@@ -16,6 +16,8 @@ const Login = () => {
       email,
       password,
     };
+
+    console.log('successfull', obj);
   };
 
   return (
@@ -60,9 +62,10 @@ const Login = () => {
               )}
               {isSending && <p>Loginning...</p>}
             </div>
-            <div style={{ "text-align":"right"}}>
-            <p><a href="/signup">Forgot Password</a></p>
-            </div>
+
+            <p className="text-end mt-2">
+              Forgot <Link to="/forgotpassword">Password?</Link><Link className="ms-2" to="/signup">Sign up</Link>
+            </p>
           </Form>
         </Col>
       </Row>
