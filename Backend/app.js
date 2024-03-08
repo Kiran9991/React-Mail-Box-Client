@@ -13,17 +13,38 @@ app.get('/', (req, res) => {
   res.send('Hello, Express!');
 });
 
+// Auth signup api
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const myPlainText = "Kiran";
+
 app.post('/signup', async(req, res) => {
     try {
         
         const { email, password, confirmPassword } = req.body;
+        const user = await User.findOne({ where: { email: email } });
 
-        const newUser = await User.create({ email, password, confirmPassword });
+        if(!email.includes('@') || !email.includes('.')) {
+          return res.status(401).json({ message: `Email is Invalid!`});
+        }
 
-        res.status(201).json({ message: 'User created Successfully', user: newUser });
+        if(user) {
+          return res.status(401).json({ message: `Email Already Exists!`});
+        }
+
+        if(password !== confirmPassword) {
+          return res.status(401).json({ message: `Confirm password doesn't matched`});
+        }
+
+        bcrypt.hash(myPlainText, saltRounds, async (err, password) => {
+          const newUser = await User.create({ email, password });
+          
+          res.status(201).json({ message: 'User created Successfully', user: newUser });
+        })
+
     }catch (error) {
         console.log(error);
-        res.status(500).json({ error: 'Error during signup' });
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 })
 

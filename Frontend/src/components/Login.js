@@ -8,7 +8,8 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const submitFormHandler = () => {
+  const submitFormHandler = (e) => {
+    e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
@@ -18,6 +19,9 @@ const Login = () => {
     };
 
     console.log('successfull', obj);
+
+    emailRef.current.value = "";
+    passwordRef.current.value = "";
   };
 
   return (

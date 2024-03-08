@@ -37,17 +37,25 @@ const Signup = () => {
 
       if (res.ok) {
         alert(data.message);
+        emailRef.current.value = "";
+        passwordRef.current.value = "";
+        confirmPasswordRef.current.value = "";
       }else {
-        throw new Error(data.message);
+        if(data.message.includes('Email')) {
+          emailRef.current.value = "";
+          throw new Error(data.message);
+        }else {
+          throw new Error(data.message);
+        }
       }
 
       console.log(data);
     } catch (error) {
       console.log(error);
+      alert(`Error: ${error.message}`)
     }
-    emailRef.current.value = "";
-    passwordRef.current.value = "";
-    confirmPasswordRef.current.value = "";
+      passwordRef.current.value = "";
+      confirmPasswordRef.current.value = "";
 
     setIsSending(false);
   };
