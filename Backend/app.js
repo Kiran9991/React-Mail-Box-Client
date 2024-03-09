@@ -15,8 +15,8 @@ app.get('/', (req, res) => {
 
 // Auth signup api
 const bcrypt = require('bcrypt');
+const { json } = require('sequelize');
 const saltRounds = 10;
-const myPlainText = "Kiran";
 
 app.post('/signup', async(req, res) => {
     try {
@@ -32,20 +32,50 @@ app.post('/signup', async(req, res) => {
           return res.status(401).json({ message: `Email Already Exists!`});
         }
 
+        if(password.length < 6) {
+          return res.status(401).json({ message: `Password is invalid!`})
+        }
+
         if(password !== confirmPassword) {
           return res.status(401).json({ message: `Confirm password doesn't matched`});
         }
 
-        bcrypt.hash(myPlainText, saltRounds, async (err, password) => {
-          const newUser = await User.create({ email, password });
-          
-          res.status(201).json({ message: 'User created Successfully', user: newUser });
-        })
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+        const newUser = await User.create({ email, password: hashedPassword });
+
+        res.status(201).json({ message: 'User created Successfully', user: newUser });
     }catch (error) {
         console.log(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ message: 'Internal Server Error!' });
     }
+})
+
+app.post('/login', async(req, res) => {
+  try{
+    const { email, password } = req.body;
+    const user = await User.findOne({ where: { email } });
+
+    if(!email.includes('@') || !email.includes('.')) {
+      return res.status(401).json({ message: `Email invalid!`});
+    }
+
+    if(!user) {
+      return res.status(401).json({ message: `User doesn't exist!`});
+    }
+
+    bcrypt.compare(password, user.dataValues.password, function(err, result) {
+      if(result) {
+        return res.status(201).json({ message: `Successfully Logined up`, result, user });
+      }else {
+        return res.status(401).json({ message: `Password is invalid!` });
+      }
+  });
+
+  }catch(error) {
+    console.log(error);
+    res.status(500).json({ message: `Internal Server Error` });
+  }
 })
 
 sequelize.sync().then(() => {

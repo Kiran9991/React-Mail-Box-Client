@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const Signup = () => {
   const [isSending, setIsSending] = useState(false);
+  const history = useHistory();
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -40,6 +41,7 @@ const Signup = () => {
         emailRef.current.value = "";
         passwordRef.current.value = "";
         confirmPasswordRef.current.value = "";
+        history.replace('./login');
       }else {
         if(data.message.includes('Email')) {
           emailRef.current.value = "";
@@ -111,7 +113,7 @@ const Signup = () => {
               )}
               {isSending && <p style={{"text-align":"center"}}>Signing Up...</p>}
             </div>
-            <p className="text-end mt-2">
+            <p className="text-end mt-2 mb-0">
               Already Registerd <Link className="ms-2" to="/login">Login</Link>
             </p>
           </Form>

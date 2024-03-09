@@ -8,7 +8,7 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const submitFormHandler = (e) => {
+  const submitFormHandler = async (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
@@ -18,9 +18,42 @@ const Login = () => {
       password,
     };
 
-    console.log('successfull', obj);
+    console.log(obj);
 
-    emailRef.current.value = "";
+    setIsSending(true);
+
+    try {
+      const res = await fetch("http://localhost:4000/login", {
+        method: "POST",
+        body: JSON.stringify(obj),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message);
+        emailRef.current.value = "";
+        passwordRef.current.value = "";
+      }else {
+        if(data.message.includes('Email')) {
+          emailRef.current.value = "";
+          throw new Error(data.message);
+        }else {
+          throw new Error(data.message);
+        }
+      }
+
+      console.log(data, 'successfully');
+    } catch (error) {
+      console.log(error);
+      alert(`Error: ${error.message}`)
+    }
+
+    setIsSending(false);
+
     passwordRef.current.value = "";
   };
 
@@ -64,10 +97,10 @@ const Login = () => {
                   Login
                 </Button>
               )}
-              {isSending && <p>Loginning...</p>}
+              {isSending && <p>Login up...</p>}
             </div>
 
-            <p className="text-end mt-2">
+            <p className="text-end mt-2 mb-0">
               Forgot <Link to="/forgotpassword">Password?</Link><Link className="ms-2" to="/signup">Sign up</Link>
             </p>
           </Form>
