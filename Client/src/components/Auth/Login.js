@@ -1,9 +1,12 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Container, Button, Row, Col, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import UserContext from "../user-context";
 
 const Login = () => {
   const [isSending, setIsSending] = useState(false);
+  const history = useHistory();
+  const userCtx = useContext(UserContext);
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -18,12 +21,10 @@ const Login = () => {
       password,
     };
 
-    console.log(obj);
-
     setIsSending(true);
 
     try {
-      const res = await fetch("http://localhost:4000/login", {
+      const res = await fetch("http://localhost:4000/user/login", {
         method: "POST",
         body: JSON.stringify(obj),
         headers: {
@@ -32,11 +33,12 @@ const Login = () => {
       });
 
       const data = await res.json();
-
       if (res.ok) {
         alert(data.message);
         emailRef.current.value = "";
         passwordRef.current.value = "";
+        history.replace('/');
+        userCtx.setLogin(true);
       }else {
         if(data.message.includes('Email')) {
           emailRef.current.value = "";
@@ -46,7 +48,8 @@ const Login = () => {
         }
       }
 
-      console.log(data, 'successfully');
+      localStorage.setItem('token', data.idToken);
+      
     } catch (error) {
       console.log(error);
       alert(`Error: ${error.message}`)
@@ -97,7 +100,7 @@ const Login = () => {
                   Login
                 </Button>
               )}
-              {isSending && <p>Login up...</p>}
+              {isSending && <p style={{"text-align":"center"}}>Login up...</p>}
             </div>
 
             <p className="text-end mt-2 mb-0">
