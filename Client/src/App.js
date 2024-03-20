@@ -1,15 +1,18 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 
 import Signup from "./components/Auth/Signup";
 import Login from "./components/Auth/Login";
 import MainHeader from "./components/Header/MainHeader";
-import Home from "./components/Home";
+import Home from "./components/Home/Home";
 import ComposeMail from "./components/ComposeMail";
-import UserContext from "./components/user-context";
+import UserContext from "./components/store/user-context";
+import MailBox from "./components/MailBox";
+import MailsContext from "./components/store/mails-context";
 
 function App() {
   const userCtx = useContext(UserContext);
+  const mailsCtx = useContext(MailsContext)
   const isLogin = userCtx.loginStatus;
 
   const token = localStorage.getItem('token');
@@ -19,9 +22,6 @@ function App() {
   }else {
     userCtx.setLogin(false);
   }
-
-  getSenderMails();
-  getReceiverMails();
 
   async function getSenderMails() {
     try {
@@ -34,26 +34,6 @@ function App() {
       });
 
       const data = await res.json();
-
-      console.log(data);
-    } catch(error) {
-      console.log(error);
-    }
-  }
-
-  async function getReceiverMails() {
-    try {
-      const res = await fetch('http://localhost:4000/composeMail/mail-box', {
-        method: 'GET',
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `${token}`
-        },
-      });
-
-      const data = await res.json();
-
-      console.log(data);
     } catch(error) {
       console.log(error);
     }
@@ -71,6 +51,9 @@ function App() {
         </Route>}
         {isLogin && <Route path="/compose-mail">
           <ComposeMail />
+        </Route>}
+        {isLogin && <Route path="/mails">
+          <MailBox/>  
         </Route>}
         {isLogin && <Route path="/">
           <Home />

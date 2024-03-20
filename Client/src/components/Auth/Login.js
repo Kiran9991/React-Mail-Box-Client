@@ -1,7 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import { Container, Button, Row, Col, Form } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
-import UserContext from "../user-context";
+import UserContext from "../store/user-context";
 
 const Login = () => {
   const [isSending, setIsSending] = useState(false);

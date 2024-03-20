@@ -10,6 +10,7 @@ const UserContextProvider = (props) => {
 
     function setLoginStatus(val) {
         setIsLogin(val);
+        if(!val) localStorage.removeItem('token');
     }
 
     const user = {

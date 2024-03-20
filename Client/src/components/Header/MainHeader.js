@@ -1,24 +1,49 @@
-import { Navbar, Container, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Navbar, Container, Nav, Button } from "react-bootstrap";
+import { Link, useHistory } from "react-router-dom";
 import { useContext } from "react";
 
-import UserContext from "../user-context";
+import UserContext from "../store/user-context";
 
 const MainHeader = () => {
   const UserCtx = useContext(UserContext);
   const isLogin = UserCtx.loginStatus;
+  const history = useHistory();
+
+  const logoutHandler = () => {
+    UserCtx.setLogin(false);
+    history.replace("/login");
+  };
 
   return (
     <Navbar bg="primary" data-bs-theme="dark">
       <Container>
-        {isLogin && <Link to="/" className="navbar-brand">
-          Home
-        </Link>}
         <Nav className="me-auto">
-          {isLogin && <Link to='/compose-mail' className="nav-link">Compose Mail</Link>}
-          {!isLogin && <Link to="/signup" className="nav-link">Signup</Link>}
-          {!isLogin && <Link to="/login" className="nav-link">Login</Link>}
+          {isLogin && (
+            <Link to="/" className="nav-link">
+              Home
+            </Link>
+          )}
+          {isLogin && (
+            <Link to="/mails" className="nav-link">
+              InBox
+            </Link>
+          )}
+          {!isLogin && (
+            <Link to="/signup" className="nav-link">
+              Signup
+            </Link>
+          )}
+          {!isLogin && (
+            <Link to="/login" className="nav-link">
+              Login
+            </Link>
+          )}
         </Nav>
+        {isLogin && (
+          <Button variant="secondary" onClick={logoutHandler}>
+            Log out
+          </Button>
+        )}
       </Container>
     </Navbar>
   );
