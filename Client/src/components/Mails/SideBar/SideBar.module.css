@@ -1,0 +1,55 @@
+.container {
+  background-color: #ffffff;
+  width: 200vh;
+  height: 90vh;
+  border-radius: 15px;
+  margin-top: 0.2rem;
+}
+
+.col {
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  height: 34rem;
+}
+
+.composeButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.sidebarContent {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 10px;
+  display: flex;
+  justify-content: center;
+  background-color: #ddf7ff;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.active {
+  background-color: #33dbdb;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  font-weight: 500;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.mainContent {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-link:hover {
+  background-color: rgb(74, 145, 145);
+}
+

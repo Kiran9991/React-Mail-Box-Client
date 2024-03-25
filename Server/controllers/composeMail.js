@@ -5,7 +5,7 @@ const composeMail = async(req, res) => {
     try {
         const user = req.user;
         
-        const { mailId, subject, message } = req.body;
+        const { userName, mailId, subject, message } = req.body;
 
         const existingMailId = await User.findOne({ where: { email: mailId } });
 
@@ -13,7 +13,7 @@ const composeMail = async(req, res) => {
             return res.status(401).json({ message: `mail doesn't exist!` });
         }
 
-        const mail = await Mails.create({ receiverGmail: mailId, subject, message, userId: user.userId });
+        const mail = await Mails.create({sender: userName, receiver: mailId, subject, message, userId: user.userId });
         res.status(201).json({ success: true, mail });
 
     }catch(error) {
@@ -44,7 +44,7 @@ const getReceiverMails = async(req, res) => {
     try {
         const user = req.user;
 
-        const receiverMails = await Mails.findAll({ where: { receiverGmail: user.email } });
+        const receiverMails = await Mails.findAll({ where: { receiver: user.email } });
 
         if(!receiverMails) {
             return res.status(401).json({ message: 'No Mails Found!' });

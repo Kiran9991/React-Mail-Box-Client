@@ -8,9 +8,11 @@ const Mails = sequelize.define('mails', {
         autoIncrement: true,
         primaryKey: true
     },
-    receiverGmail: Sequelize.STRING,
+    sender: Sequelize.STRING,
+    receiver: Sequelize.STRING,
     subject: Sequelize.STRING,
-    message: Sequelize.STRING
+    message: Sequelize.STRING,
+    media: Sequelize.BLOB
 })
 
 module.exports = Mails;

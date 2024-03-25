@@ -35,6 +35,7 @@ const Login = () => {
       const data = await res.json();
       if (res.ok) {
         alert(data.message);
+        localStorage.setItem('userName', data.email);
         emailRef.current.value = "";
         passwordRef.current.value = "";
         history.replace('/');

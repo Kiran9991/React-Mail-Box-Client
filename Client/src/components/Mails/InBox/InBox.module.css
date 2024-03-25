@@ -1,0 +1,36 @@
+.mainContent {
+  display: flex;
+  padding: 5px;
+  background: #edd09a;
+  border-radius: 12px;
+  justify-content: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.mainContent h2 {
+  font-weight: bolder;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mailUl {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  background: #ececec;
+}
+
+.mailUl:hover {
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.mailDiv {
+  display: flex;
+  gap: 5rem;
+}

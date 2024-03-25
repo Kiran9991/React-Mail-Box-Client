@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, Col } from "react-bootstrap";
 import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const ComposeMail = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const toRef = useRef();
   const subjectRef = useRef();
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -15,30 +15,32 @@ const ComposeMail = () => {
     const to = toRef.current.value;
     const subject = subjectRef.current.value;
     const message = editorState.getCurrentContent().getPlainText();
+    const userName = localStorage.getItem('userName');
 
     const obj = {
+      userName,
       mailId: to,
       subject,
       message,
     };
 
     try {
-      const res = await fetch('http://localhost:4000/composeMail/send-mail', {
-        method: 'POST',
-        headers: { 
+      const res = await fetch("http://localhost:4000/composeMail/send-mail", {
+        method: "POST",
+        headers: {
           "Content-Type": "application/json",
-          "Authorization": `${token}`
+          Authorization: `${token}`,
         },
-        body: JSON.stringify(obj)
-      })
-  
-      const data = await res.json();
-  
-      console.log('successfully posted mail',data)
+        body: JSON.stringify(obj),
+      });
 
-      alert('successfully sended mail');
-    } catch(error) {
-      console.log(error,'error in client side');
+      const data = await res.json();
+
+      console.log("successfully posted mail", data);
+
+      alert("successfully sended mail");
+    } catch (error) {
+      console.log(error, "error in client side");
       alert(error);
     }
   };
@@ -48,13 +50,7 @@ const ComposeMail = () => {
   };
 
   return (
-    <Container
-      className="bg-white w-200vh h-90vh rounded-3"
-      style={{
-        height: "90vh",
-        marginTop: "0.2rem",
-      }}
-    >
+    <Col xs={10}>
       <Form onSubmit={submitFormHandler}>
         <Form.Group>
           <Form.Label className="mt-2">To:-</Form.Label>
@@ -79,19 +75,24 @@ const ComposeMail = () => {
         <Form.Group>
           <Form.Label>Message:-</Form.Label>
           <Editor
-          editorState={editorState}
-          toolbarClassName="toolbarClassName"
-          wrapperClassName="wrapperClassName"
-          editorClassName="editorClassName"
-          onEditorStateChange={onEditorStateChange}
-        />
+            editorState={editorState}
+            toolbarClassName="toolbarClassName"
+            wrapperClassName="wrapperClassName"
+            editorClassName="editorClassName"
+            onEditorStateChange={onEditorStateChange}
+          />
         </Form.Group>
 
-        <Button variant="primary" type="submit" className="align-self-start">
+        <Button
+          variant="primary"
+          type="submit"
+          className="align-self-start"
+          style={{ boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.5)" }}
+        >
           Send
         </Button>
       </Form>
-    </Container>
+    </Col>
   );
 };
 

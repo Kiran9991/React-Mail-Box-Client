@@ -8,9 +8,11 @@ const MainHeader = () => {
   const UserCtx = useContext(UserContext);
   const isLogin = UserCtx.loginStatus;
   const history = useHistory();
+  const userName = localStorage.getItem('userName');
 
   const logoutHandler = () => {
     UserCtx.setLogin(false);
+    localStorage.removeItem('userName');
     history.replace("/login");
   };
 
@@ -24,7 +26,7 @@ const MainHeader = () => {
             </Link>
           )}
           {isLogin && (
-            <Link to="/mails" className="nav-link">
+            <Link to="/mail" className="nav-link">
               InBox
             </Link>
           )}
@@ -39,6 +41,19 @@ const MainHeader = () => {
             </Link>
           )}
         </Nav>
+        {isLogin && <div
+          style={{
+            "marginRight": "10px",
+            background: "#d4d4f9",
+            padding: "5px",
+            "borderRadius": "20px",
+            "paddingLeft": "30px",
+            "paddingRight": "30px",
+            "fontStyle": "italic",
+          }}
+        >
+          <div>{userName}</div>
+        </div>}
         {isLogin && (
           <Button variant="secondary" onClick={logoutHandler}>
             Log out

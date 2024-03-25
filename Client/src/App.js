@@ -5,9 +5,9 @@ import Signup from "./components/Auth/Signup";
 import Login from "./components/Auth/Login";
 import MainHeader from "./components/Header/MainHeader";
 import Home from "./components/Home/Home";
-import ComposeMail from "./components/ComposeMail";
+import ComposeMail from "./components/Mails/Compose/ComposeMail";
 import UserContext from "./components/store/user-context";
-import MailBox from "./components/MailBox";
+import Mail from "./components/Mails/Mail";
 import MailsContext from "./components/store/mails-context";
 
 function App() {
@@ -49,11 +49,8 @@ function App() {
         {!isLogin && <Route path="/login">
           <Login />
         </Route>}
-        {isLogin && <Route path="/compose-mail">
-          <ComposeMail />
-        </Route>}
-        {isLogin && <Route path="/mails">
-          <MailBox/>  
+        {isLogin && <Route path="/mail">
+          <Mail/>  
         </Route>}
         {isLogin && <Route path="/">
           <Home />

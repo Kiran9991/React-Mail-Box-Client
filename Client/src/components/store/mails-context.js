@@ -30,7 +30,10 @@ const MailsContextProvider = (props) => {
         });
     
         const data = await res.json();
-        setMailBox(data.receiverMails);
+        const arrData = [...data.receiverMails];
+        arrData.sort((a,b) => b.id - a.id);
+        setMailBox(arrData);
+        console.log('made api call')
       } catch (error) {
         console.log(error);
       }
