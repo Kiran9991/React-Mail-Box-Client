@@ -1,26 +1,25 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 
 import Signup from "./components/Auth/Signup";
 import Login from "./components/Auth/Login";
 import MainHeader from "./components/Header/MainHeader";
 import Home from "./components/Home/Home";
-import ComposeMail from "./components/Mails/Compose/ComposeMail";
-import UserContext from "./components/store/user-context";
 import Mail from "./components/Mails/Mail";
-import MailsContext from "./components/store/mails-context";
+import { userActions } from "./components/store/userSlice";
+import { mailActions } from "./components/store/mailSlice";
 
 function App() {
-  const userCtx = useContext(UserContext);
-  const mailsCtx = useContext(MailsContext)
-  const isLogin = userCtx.loginStatus;
+  const isLogin = useSelector(state => state.user.loginStatus);
+  const dispatch = useDispatch();
 
   const token = localStorage.getItem('token');
 
   if(token) {
-    userCtx.setLogin(true);
+    dispatch(userActions.setLoginStatus(true));
   }else {
-    userCtx.setLogin(false);
+    dispatch(userActions.setLoginStatus(false));
   }
 
   async function getSenderMails() {
@@ -38,6 +37,28 @@ function App() {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    async function getReceiverMails() {
+      try {
+        const res = await fetch("http://localhost:4000/composeMail/mail-box", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+        });
+    
+        const data = await res.json();
+        const arrData = [...data.receiverMails];
+        arrData.sort((a,b) => b.id - a.id);
+        dispatch(mailActions.sendMail(arrData));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getReceiverMails();
+  }, [token, dispatch]);
 
   return (
     <Fragment>

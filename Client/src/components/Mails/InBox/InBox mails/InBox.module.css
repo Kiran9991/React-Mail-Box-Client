@@ -1,0 +1,13 @@
+.mainContent {
+  display: flex;
+  padding: 5px;
+  background: #edd09a;
+  border-radius: 12px;
+  justify-content: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.mainContent h2 {
+  font-weight: bolder;
+}

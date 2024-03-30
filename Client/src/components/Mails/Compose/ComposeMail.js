@@ -1,14 +1,18 @@
 import { useRef, useState } from "react";
-import { Container, Form, Button, Col } from "react-bootstrap";
+import { Form, Button, Col } from "react-bootstrap";
 import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { useDispatch } from 'react-redux';
+
+import { mailActions } from "../../store/mailSlice";
 
 const ComposeMail = () => {
   const token = localStorage.getItem("token");
   const toRef = useRef();
   const subjectRef = useRef();
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const dispatch = useDispatch()
 
   const submitFormHandler = async (e) => {
     e.preventDefault();
@@ -22,6 +26,7 @@ const ComposeMail = () => {
       mailId: to,
       subject,
       message,
+      viewed:false
     };
 
     try {
@@ -39,6 +44,7 @@ const ComposeMail = () => {
       console.log("successfully posted mail", data);
 
       alert("successfully sended mail");
+      dispatch(mailActions.sendMail(obj));
     } catch (error) {
       console.log(error, "error in client side");
       alert(error);

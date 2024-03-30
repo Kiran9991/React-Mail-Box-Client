@@ -1,18 +1,18 @@
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
-import { useContext } from "react";
-
-import UserContext from "../store/user-context";
+import { useSelector, useDispatch } from 'react-redux';
+import { userActions } from "../store/userSlice";
 
 const MainHeader = () => {
-  const UserCtx = useContext(UserContext);
-  const isLogin = UserCtx.loginStatus;
+  const dispatch = useDispatch()
+  const isLogin = useSelector(state => state.user.loginStatus);
   const history = useHistory();
   const userName = localStorage.getItem('userName');
 
   const logoutHandler = () => {
-    UserCtx.setLogin(false);
+    dispatch(userActions.setLoginStatus(false))
     localStorage.removeItem('userName');
+    localStorage.removeItem('token');
     history.replace("/login");
   };
 

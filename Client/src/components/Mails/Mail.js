@@ -1,24 +1,20 @@
-import { useContext } from "react";
 import { Container, Row } from "react-bootstrap";
-import { useHistory, Route, Switch, exact } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
-import MailsContext from "../store/mails-context";
 import SideBar from "./SideBar/SideBar";
-import InBox from "./InBox/InBox";
+import InBox from "./InBox/InBox mails/InBox";
 import mail from "./Mail.module.css";
 import ComposeMail from "./Compose/ComposeMail";
 import MailView from "./InBox/view/MailView";
 
 const Mail = () => {
-  const mailsCtx = useContext(MailsContext);
-  // console.log(mailsCtx.inBox);
 
   return (
     <Container className={mail.container}>
       <Row>
         <SideBar />
         <Switch>
-        <Route path="/mail/inbox/:id" exact>
+        <Route path="/mail/inbox/:id">
             <MailView/>
           </Route>
           <Route path="/mail/inbox">

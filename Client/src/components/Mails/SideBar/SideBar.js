@@ -2,7 +2,6 @@ import { Col, Button } from "react-bootstrap";
 import { useHistory, Link, useLocation } from "react-router-dom";
 
 import sideBar from "./SideBar.module.css";
-import { useState } from "react";
 
 const SideBar = () => {
   const history = useHistory();

@@ -1,12 +1,14 @@
-import { useContext, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import { Container, Button, Row, Col, Form } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
-import UserContext from "../store/user-context";
+import { useDispatch } from 'react-redux';
+
+import { userActions } from "../store/userSlice";
 
 const Login = () => {
   const [isSending, setIsSending] = useState(false);
   const history = useHistory();
-  const userCtx = useContext(UserContext);
+  const dispatch = useDispatch();
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -39,7 +41,7 @@ const Login = () => {
         emailRef.current.value = "";
         passwordRef.current.value = "";
         history.replace('/');
-        userCtx.setLogin(true);
+        dispatch(userActions.setLoginStatus(true))
       }else {
         if(data.message.includes('Email')) {
           emailRef.current.value = "";

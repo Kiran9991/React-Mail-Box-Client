@@ -1,14 +1,13 @@
-import { useContext } from "react";
 import { Col, Row } from "react-bootstrap";
-import MailsContext from "../../../store/mails-context";
 import { useLocation } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 const MailView = () => {
-  const mailCtx = useContext(MailsContext);
+  const mails = useSelector(state => state.mail.inBox);
   const location = useLocation();
   const path = location.pathname;
   const id = parseInt(path[path.length - 1]);
-  const mail = mailCtx.inBox.find((item) => id === item.id && item);
+  const mail = mails.find((item) => id === item.id && item);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -38,7 +37,7 @@ const MailView = () => {
         {mail.subject}
       </Row>
       <Row style={{ padding: "27px", fontFamily: "Arial, sans-serif" }}>
-        {mail.subject}
+        {mail.message}
       </Row>
     </Col>
   );
