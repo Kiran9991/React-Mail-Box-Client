@@ -1,4 +1,3 @@
-const { where } = require("sequelize");
 const Mails = require("../models/Mails");
 const User = require("../models/user");
 
@@ -11,7 +10,7 @@ const composeMail = async (req, res) => {
     const existingMailId = await User.findOne({ where: { email: mailId } });
 
     if (!existingMailId) {
-      return res.status(401).json({ message: `mail doesn't exist!` });
+      return res.status(401).json({ message: `Mail id doesn't exist!` });
     }
 
     const mail = await Mails.create({
@@ -55,7 +54,7 @@ const getReceiverMails = async (req, res) => {
     });
 
     if (!receiverMails) {
-      return res.status(401).json({ message: "No Mails Found!" });
+      return res.status(401).json({ message: "Your inbox is Empty!" });
     }
 
     res.status(201).json({ success: true, receiverMails });
@@ -68,7 +67,6 @@ const getReceiverMails = async (req, res) => {
 const updateViewedStatus = async (req, res) => {
     try {
         const mailId = req.params.id;
-        console.log(mailId)
         const { viewed } = req.body;
 
         const result = await Mails.update({ viewed }, { where: { id:mailId }});

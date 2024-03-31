@@ -111,7 +111,7 @@ const Signup = () => {
                   Sign Up
                 </Button>
               )}
-              {isSending && <p style={{"text-align":"center"}}>Signing Up...</p>}
+              {isSending && <p style={{"textAlign":"center"}}>Signing Up...</p>}
             </div>
             <p className="text-end mt-2 mb-0">
               Already Registerd <Link className="ms-2" to="/login">Login</Link>

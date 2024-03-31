@@ -7,7 +7,7 @@ const MailView = () => {
   const location = useLocation();
   const path = location.pathname;
   const id = parseInt(path[path.length - 1]);
-  const mail = mails.find((item) => id === item.id && item);
+  const mail = mails.filter((item) => id === item.id)[0];
 
   function formatDate(dateString) {
     const date = new Date(dateString);

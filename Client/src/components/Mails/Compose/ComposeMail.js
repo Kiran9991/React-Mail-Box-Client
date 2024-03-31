@@ -44,7 +44,7 @@ const ComposeMail = () => {
       console.log("successfully posted mail", data);
 
       alert("successfully sended mail");
-      dispatch(mailActions.sendMail(obj));
+      // dispatch(mailActions.sendMail(obj));
     } catch (error) {
       console.log(error, "error in client side");
       alert(error);

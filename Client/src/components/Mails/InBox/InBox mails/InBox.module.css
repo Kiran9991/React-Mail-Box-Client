@@ -11,3 +11,9 @@
 .mainContent h2 {
   font-weight: bolder;
 }
+
+.empty {
+  text-align: center;
+  margin: 20px;
+  font-weight: bold;
+}

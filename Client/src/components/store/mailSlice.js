@@ -15,6 +15,10 @@ const mailSlice = createSlice({
                 state.inBox.push(action.payload);
             }
         },
+        changeViewed: (state, action) => {
+            const singleItem = state.inBox.find((item) => item.id === action.payload);
+            singleItem.viewed = "1";
+        }
     }
 })
 

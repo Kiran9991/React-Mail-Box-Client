@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,34 +13,28 @@ import { mailActions } from "./components/store/mailSlice";
 function App() {
   const isLogin = useSelector(state => state.user.loginStatus);
   const dispatch = useDispatch();
-
   const token = localStorage.getItem('token');
 
-  if(token) {
-    dispatch(userActions.setLoginStatus(true));
-  }else {
-    dispatch(userActions.setLoginStatus(false));
-  }
+  // async function getSenderMails() {
+  //   try {
+  //     const res = await fetch('http://localhost:4000/composeMail/drafts', {
+  //       method: 'GET',
+  //       headers: { 
+  //         "Content-Type": "application/json",
+  //         "Authorization": `${token}`
+  //       },
+  //     });
 
-  async function getSenderMails() {
-    try {
-      const res = await fetch('http://localhost:4000/composeMail/drafts', {
-        method: 'GET',
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `${token}`
-        },
-      });
-
-      const data = await res.json();
-    } catch(error) {
-      console.log(error);
-    }
-  }
+  //     const data = await res.json();
+  //   } catch(error) {
+  //     console.log(error);
+  //   }
+  // }
 
   useEffect(() => {
     async function getReceiverMails() {
       try {
+        if(!token) return;
         const res = await fetch("http://localhost:4000/composeMail/mail-box", {
           method: "GET",
           headers: {

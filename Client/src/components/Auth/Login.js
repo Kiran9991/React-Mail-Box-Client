@@ -103,7 +103,7 @@ const Login = () => {
                   Login
                 </Button>
               )}
-              {isSending && <p style={{"text-align":"center"}}>Login up...</p>}
+              {isSending && <p style={{"textAlign":"center"}}>Login up...</p>}
             </div>
 
             <p className="text-end mt-2 mb-0">
