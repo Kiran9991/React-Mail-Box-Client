@@ -9,7 +9,7 @@ const composeMail = async (req, res) => {
 
     const existingMailId = await User.findOne({ where: { email: mailId } });
 
-    if (!existingMailId) {
+    if (existingMailId.dataValues.id === user.userId) {
       return res.status(401).json({ message: `Mail id doesn't exist!` });
     }
 
@@ -21,6 +21,7 @@ const composeMail = async (req, res) => {
       userId: user.userId,
       viewed: viewed
     });
+
     res.status(201).json({ success: true, mail });
   } catch (error) {
     console.log(error);

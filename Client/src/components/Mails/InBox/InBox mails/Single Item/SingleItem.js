@@ -1,13 +1,11 @@
 import { Badge } from "react-bootstrap";
 import inBox from "./SingleItem.module.css";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { mailActions } from "../../../../store/mailSlice";
 
 const SingleItem = (props) => {
-  const { item } = props;
-  const mails = useSelector(state => state.mail.inBox);
+  const { id, title, read, date, subject } = props;
   const dispatch = useDispatch();
-  // console.log(mails);
 
   const formattedDate = (dateString) => {
     const date = new Date(dateString);
@@ -17,29 +15,28 @@ const SingleItem = (props) => {
   };
 
   const sendIsView = async () => {
-    // console.log(item.id);
     const obj = { viewed: true };
-    await fetch(`http://localhost:4000/composeMail/mail/${item.id}`, {
+    await fetch(`http://localhost:4000/composeMail/mail/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(obj),
     });
-    dispatch(mailActions.changeViewed(item.id));
-    // console.log(item)
+    console.log(id)
+    dispatch(mailActions.changeViewed(id));
   };
 
   return (
     <ul className={inBox.mailUl} onClick={sendIsView}>
       <div className={inBox.mailDiv}>
-        <div>{item.viewed === "0" && <Badge bg="primary"> </Badge>}</div>
-        <div className={item.viewed === "0" ? inBox.sender : ""}>
-          {item.sender}
+        <div>{read === "0" && <Badge bg="primary"> </Badge>}</div>
+        <div className={read === "0" ? inBox.sender : ""}>
+          {title}
         </div>
-        <div>{item.subject}</div>
+        <div>{subject}</div>
       </div>
-      <div className={inBox.date}>{formattedDate(item.createdAt)}</div>
+      <div className={inBox.date}>{formattedDate(date)}</div>
     </ul>
   );
 };

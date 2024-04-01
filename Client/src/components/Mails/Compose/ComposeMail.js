@@ -38,13 +38,13 @@ const ComposeMail = () => {
         },
         body: JSON.stringify(obj),
       });
-
       const data = await res.json();
-
+      if(!res.ok) {
+        throw new Error(data.message)
+      }
       console.log("successfully posted mail", data);
-
       alert("successfully sended mail");
-      // dispatch(mailActions.sendMail(obj));
+      dispatch(mailActions.sendMails(obj));
     } catch (error) {
       console.log(error, "error in client side");
       alert(error);

@@ -16,6 +16,8 @@ const MailView = () => {
     return `${day} ${month}`;
   }
 
+  // console.log(mails);
+
   return (
     <Col xs={10}>
       <Row style={{ padding: "15px" }}>

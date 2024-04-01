@@ -1,4 +1,4 @@
-import { Col, Button } from "react-bootstrap";
+import { Col, Button, ListGroup } from "react-bootstrap";
 import { useHistory, Link, useLocation } from "react-router-dom";
 
 import sideBar from "./SideBar.module.css";
@@ -11,6 +11,16 @@ const SideBar = () => {
     return location.pathname === path ? sideBar.active : "";
   };
 
+  const sideBarListItems = [
+    { id: 1, to: "inbox", text: "InBox" },
+    { id: 2, to: "unread", text: "Unread" },
+    { id: 3, to: "sent", text: "Sent" },
+    { id: 4, to: "draft", text: "Draft" },
+    { id: 5, to: "starred", text: "Starred" },
+    { id: 6, to: "spam", text: "Spam" },
+    { id: 7, to: "deleted", text: "Deleted Items" },
+  ];
+
   return (
     <Col xs={2} id="sidebar" className={sideBar.col}>
       <Button
@@ -21,54 +31,19 @@ const SideBar = () => {
         Compose Mail
       </Button>
       <div className={sideBar.sidebarContent}>
-        <Link
-          to="/mail/inbox"
-          className={`nav-link ${isActivePath("/mail/inbox")}`}
-        >
-          InBox
-        </Link>
-        <Link
-          to="/mail/unread"
-          className={`nav-link ${isActivePath("/mail/unread")}`}
-        >
-          Unread
-        </Link>
-        <Link
-          to="/mail/starred"
-          className={`nav-link ${isActivePath("/mail/starred")}`}
-        >
-          Starred
-        </Link>
-        <Link
-          to="/mail/draft"
-          className={`nav-link ${isActivePath("/mail/draft")}`}
-        >
-          Draft
-        </Link>
-        <Link
-          to="/mail/sent"
-          className={`nav-link ${isActivePath("/mail/sent")}`}
-        >
-          Sent
-        </Link>
-        <Link
-          to="/mail/archive"
-          className={`nav-link ${isActivePath("/mail/archive")}`}
-        >
-          Archive
-        </Link>
-        <Link
-          to="/mail/spam"
-          className={`nav-link ${isActivePath("/mail/spam")}`}
-        >
-          Spam
-        </Link>
-        <Link
-          to="/mail/deleted"
-          className={`nav-link ${isActivePath("/mail/deleted")}`}
-        >
-          Deleted Items
-        </Link>
+        <ListGroup>
+          {sideBarListItems.map((item) => (
+            <ul className={sideBar.ulText} key={item.id}>
+              <Link
+                to={`/mail/${item.to}`}
+                className={`nav-link ${isActivePath(`/mail/${item.to}`)}`}
+                key={item.id}
+              >
+                {item.text}
+              </Link>
+            </ul>
+          ))}
+        </ListGroup>
       </div>
     </Col>
   );

@@ -7,7 +7,6 @@ import Login from "./components/Auth/Login";
 import MainHeader from "./components/Header/MainHeader";
 import Home from "./components/Home/Home";
 import Mail from "./components/Mails/Mail";
-import { userActions } from "./components/store/userSlice";
 import { mailActions } from "./components/store/mailSlice";
 
 function App() {
@@ -15,21 +14,25 @@ function App() {
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
 
-  // async function getSenderMails() {
-  //   try {
-  //     const res = await fetch('http://localhost:4000/composeMail/drafts', {
-  //       method: 'GET',
-  //       headers: { 
-  //         "Content-Type": "application/json",
-  //         "Authorization": `${token}`
-  //       },
-  //     });
-
-  //     const data = await res.json();
-  //   } catch(error) {
-  //     console.log(error);
-  //   }
-  // }
+  useEffect(() => {
+    async function getSenderMails() {
+      try {
+        const res = await fetch('http://localhost:4000/composeMail/drafts', {
+          method: 'GET',
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+          },
+        });
+  
+        const data = await res.json();
+        dispatch(mailActions.sendMails(data.userMails));
+      } catch(error) {
+        console.log(error);
+      }
+    }
+    getSenderMails();
+  },[token, dispatch])
 
   useEffect(() => {
     async function getReceiverMails() {
@@ -46,7 +49,7 @@ function App() {
         const data = await res.json();
         const arrData = [...data.receiverMails];
         arrData.sort((a,b) => b.id - a.id);
-        dispatch(mailActions.sendMail(arrData));
+        dispatch(mailActions.updateInBox(arrData));
       } catch (error) {
         console.log(error);
       }
