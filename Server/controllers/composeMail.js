@@ -9,8 +9,12 @@ const composeMail = async (req, res) => {
 
     const existingMailId = await User.findOne({ where: { email: mailId } });
 
+    if(!existingMailId) {
+      return res.status(401).json({ message: `Mail Id doesn't exist!` });
+    }
+
     if (existingMailId.dataValues.id === user.userId) {
-      return res.status(401).json({ message: `Mail id doesn't exist!` });
+      return res.status(401).json({ message: `It's your mail Id!` });
     }
 
     const mail = await Mails.create({
@@ -65,7 +69,7 @@ const getReceiverMails = async (req, res) => {
   }
 };
 
-const updateViewedStatus = async (req, res) => {
+const markAsRead = async (req, res) => {
     try {
         const mailId = req.params.id;
         const { viewed } = req.body;
@@ -83,5 +87,5 @@ module.exports = {
   composeMail,
   getSenderMails,
   getReceiverMails,
-  updateViewedStatus
+  markAsRead
 };

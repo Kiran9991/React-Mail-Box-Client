@@ -12,7 +12,7 @@ const MailView = () => {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const day = date.getDate();
-    const month = date.toLocaleString("en-US", { month: "short", year:'numeric' });
+    const month = date.toLocaleString("en-US", { month: "short", year:'numeric', hour:'2-digit', minute:'2-digit' });
     return `${day} ${month}`;
   }
 
@@ -24,7 +24,7 @@ const MailView = () => {
         <Col sm={8} style={{ fontSize: "larger", fontWeight: "400" }}>
           {mail.sender}
         </Col>
-        <Col sm={4} style={{ color: "#8b8585" }}>
+        <Col sm={4} style={{ color: "#8b8585", fontSize: '14px' }}>
           {formatDate(mail.updatedAt)}
         </Col>
       </Row>

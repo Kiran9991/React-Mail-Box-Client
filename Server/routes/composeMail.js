@@ -12,6 +12,6 @@ router.get('/drafts', middleWare.auth, controller.getSenderMails);
 
 router.get('/mail-box', middleWare.auth, controller.getReceiverMails);
 
-router.put('/mail/:id', controller.updateViewedStatus);
+router.put('/mail/:id', controller.markAsRead);
 
 module.exports = router;

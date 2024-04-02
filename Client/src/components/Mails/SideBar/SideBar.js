@@ -33,7 +33,7 @@ const SideBar = () => {
       <div className={sideBar.sidebarContent}>
         <ListGroup>
           {sideBarListItems.map((item) => (
-            <ul className={sideBar.ulText} key={item.id}>
+            <div className={sideBar.ulText} key={item.id}>
               <Link
                 to={`/mail/${item.to}`}
                 className={`nav-link ${isActivePath(`/mail/${item.to}`)}`}
@@ -41,7 +41,7 @@ const SideBar = () => {
               >
                 {item.text}
               </Link>
-            </ul>
+            </div>
           ))}
         </ListGroup>
       </div>
