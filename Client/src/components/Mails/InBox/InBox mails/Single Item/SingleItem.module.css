@@ -3,17 +3,31 @@
   justify-content: space-between;
 }
 
+.mailUlActive {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  margin-bottom: -1px;
+  background: rgb(216 216 216);
+  border: 1px solid;
+  border-color: #dadada;
+}
+
 .mailUl {
   display: flex;
   justify-content: space-between;
   padding: 5px;
   margin-bottom: -1px;
-  background: #ececec;
   border: 1px solid;
   border-color: #dadada;
+  background: #ececec
 }
 
 .mailUl:hover {
+  background-color: rgb(192, 189, 189);
+}
+
+.mailUlActive:hover {
   background-color: rgb(192, 189, 189);
 }
 

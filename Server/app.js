@@ -8,14 +8,14 @@ const sequelize = require('./util/database');
 const User = require('./models/user');
 const Mails = require('./models/Mails');
 const userRoute = require('./routes/user');
-const composeMailRoute = require('./routes/composeMail');
+const mailRoute = require('./routes/Mail');
 
 app.use(bodyParser.json());
 app.use(cors());
 dotenv.config();
 
 app.use('/user', userRoute);
-app.use('/composeMail', composeMailRoute);
+app.use('/mail', mailRoute);
 
 sequelize.sync().then(() => {
     console.log('Database synced');

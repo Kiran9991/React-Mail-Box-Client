@@ -83,9 +83,24 @@ const markAsRead = async (req, res) => {
     }
 }
 
+const deleteMail = async (req, res) => {
+  try {
+    const mailId = req.params.id;
+    const mail = await Mails.findOne({ where: { id: mailId } });
+
+    const result = await mail.destroy();
+
+    res.status(201).json({ success: true, result, message: `Successfully deleted!`})
+  }catch(error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: 'Something went wrong!' });
+  }
+}
+
 module.exports = {
   composeMail,
   getSenderMails,
   getReceiverMails,
-  markAsRead
+  markAsRead,
+  deleteMail
 };

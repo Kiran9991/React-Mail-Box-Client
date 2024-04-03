@@ -11,13 +11,14 @@ import { mailActions } from "./components/store/mailSlice";
 
 function App() {
   const isLogin = useSelector(state => state.user.loginStatus);
+  const mails = useSelector(state => state.mail.sendedMails);
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
 
   useEffect(() => {
     async function getSenderMails() {
       try {
-        const res = await fetch('http://localhost:4000/composeMail/drafts', {
+        const res = await fetch('http://localhost:4000/mail/drafts', {
           method: 'GET',
           headers: { 
             "Content-Type": "application/json",
@@ -38,7 +39,7 @@ function App() {
     async function getReceiverMails() {
       try {
         if(!token) return;
-        const res = await fetch("http://localhost:4000/composeMail/mail-box", {
+        const res = await fetch("http://localhost:4000/mail/mail-box", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -30,7 +30,7 @@ const ComposeMail = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:4000/composeMail/send-mail", {
+      const res = await fetch("http://localhost:4000/mail/send-mail", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

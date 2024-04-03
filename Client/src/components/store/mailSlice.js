@@ -23,6 +23,9 @@ const mailSlice = createSlice({
                 state.sendedMails.push(action.payload)
             }
         },
+        deleteReceivedMail: (state, action) => {
+            state.inBox = state.inBox.filter((item) => item.id !== action.payload);
+        }
     }
 })
 

@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const controller = require('../controllers/composeMail');
+const controller = require('../controllers/Mail');
 
 const middleWare = require('../middleware/auth');
 
@@ -12,6 +12,8 @@ router.get('/drafts', middleWare.auth, controller.getSenderMails);
 
 router.get('/mail-box', middleWare.auth, controller.getReceiverMails);
 
-router.put('/mail/:id', controller.markAsRead);
+router.put('/mail-view/:id', controller.markAsRead);
+
+router.delete('/delete/:id', middleWare.auth, controller.deleteMail);
 
 module.exports = router;
