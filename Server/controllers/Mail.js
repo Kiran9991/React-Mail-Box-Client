@@ -5,9 +5,9 @@ const composeMail = async (req, res) => {
   try {
     const user = req.user;
 
-    const { userName, mailId, subject, message, viewed } = req.body;
+    const { sender, receiver, subject, message, viewed } = req.body;
 
-    const existingMailId = await User.findOne({ where: { email: mailId } });
+    const existingMailId = await User.findOne({ where: { email: receiver } });
 
     if(!existingMailId) {
       return res.status(401).json({ message: `Mail Id doesn't exist!` });
@@ -18,12 +18,12 @@ const composeMail = async (req, res) => {
     }
 
     const mail = await Mails.create({
-      sender: userName,
-      receiver: mailId,
+      sender,
+      receiver,
       subject,
       message,
       userId: user.userId,
-      viewed: viewed
+      viewed
     });
 
     res.status(201).json({ success: true, mail });

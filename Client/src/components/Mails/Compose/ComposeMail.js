@@ -19,14 +19,14 @@ const ComposeMail = () => {
     const to = toRef.current.value;
     const subject = subjectRef.current.value;
     const message = editorState.getCurrentContent().getPlainText();
-    const userName = localStorage.getItem('userName');
+    const sender = localStorage.getItem('userName');
 
     const obj = {
-      userName,
-      mailId: to,
+      sender,
+      receiver: to,
       subject,
       message,
-      viewed:false
+      viewed:"0",
     };
 
     try {
@@ -44,9 +44,9 @@ const ComposeMail = () => {
       }
       console.log("successfully posted mail", data);
       alert("successfully sended mail");
-      dispatch(mailActions.sendMails(obj));
+      dispatch(mailActions.sendMails(data.mail));
     } catch (error) {
-      console.log(error, "error in client side");
+      console.log(error);
       alert(error);
     }
   };

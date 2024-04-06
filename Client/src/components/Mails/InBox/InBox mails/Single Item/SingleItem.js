@@ -1,11 +1,16 @@
 import { Badge } from "react-bootstrap";
 import inBox from "./SingleItem.module.css";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
+
 import { mailActions } from "../../../../store/mailSlice";
 
 const SingleItem = (props) => {
   const { id, title, read, date, subject } = props;
+  const location = useLocation();
   const token = localStorage.getItem("token");
+  let path = location.pathname;
+
   const dispatch = useDispatch();
 
   const formattedDate = (dateString) => {
@@ -21,34 +26,42 @@ const SingleItem = (props) => {
 
   const sendIsView = async () => {
     const obj = { viewed: true };
-    await fetch(`http://localhost:4000/mail/mail-view/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(obj),
-    });
-    dispatch(mailActions.changeViewed(id));
+    const sendReadApi = async () => {
+      await fetch(`http://localhost:4000/mail/mail-view/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(obj),
+      });
+    };
+    if (path.includes("inbox")) {
+      sendReadApi();
+      dispatch(mailActions.changeViewed(id));
+    }
   };
 
   const deleteMailHandler = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    const sendDeleteApi = async (id) => {
+      await fetch(`http://localhost:4000/mail/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      });
+    };
     try {
-      const res = await fetch(
-        `http://localhost:4000/mail/delete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-        }
-      );
-      if (res.ok) {
+      if (path.includes("inbox")) {
+        sendDeleteApi(id);
         dispatch(mailActions.deleteReceivedMail(id));
-        alert(`Deleted ${title} mail`);
+      } else {
+        sendDeleteApi(id);
+        dispatch(mailActions.deleteSentMails(id));
       }
+      alert(`Deleted ${title} mail`);
     } catch (error) {
       console.log(error);
       alert(error);

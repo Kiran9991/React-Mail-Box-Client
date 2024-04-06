@@ -1,5 +1,5 @@
 import { Container, Row } from "react-bootstrap";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import SideBar from "./SideBar/SideBar";
 import InBox from "./InBox/InBox mails/InBox";
@@ -29,6 +29,7 @@ const Mail = () => {
           <Route path="/mail/compose">
             <ComposeMail />
           </Route>
+          <Redirect to='/mail/inbox'/>
         </Switch>
       </Row>
     </Container>

@@ -8,7 +8,7 @@ const SideBar = () => {
   const location = useLocation();
 
   const isActivePath = (path) => {
-    return location.pathname === path ? sideBar.active : "";
+    return location.pathname.includes(path) ? sideBar.active : "";
   };
 
   const sideBarListItems = [
