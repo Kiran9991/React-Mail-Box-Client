@@ -18,7 +18,7 @@ const InBox = () => {
           title={item.sender}
           subject={item.subject}
           date={item.createdAt}
-          read={item.viewed}
+          read={item.readByReceiver}
         />
       </Link>
     ));

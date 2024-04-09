@@ -18,7 +18,7 @@ const Sent = () => {
             title={item.receiver}
             subject={item.subject}
             date={item.createdAt}
-            read={item.viewed}
+            read={item.readBySender}
           />
         </Link>
       ))

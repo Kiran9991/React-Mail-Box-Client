@@ -5,7 +5,7 @@ const composeMail = async (req, res) => {
   try {
     const user = req.user;
 
-    const { sender, receiver, subject, message, viewed } = req.body;
+    const { sender, receiver, subject, message, readBySender, readByReceiver } = req.body;
 
     const existingMailId = await User.findOne({ where: { email: receiver } });
 
@@ -23,7 +23,8 @@ const composeMail = async (req, res) => {
       subject,
       message,
       userId: user.userId,
-      viewed
+      readBySender,
+      readByReceiver
     });
 
     res.status(201).json({ success: true, mail });
@@ -72,9 +73,15 @@ const getReceiverMails = async (req, res) => {
 const markAsRead = async (req, res) => {
     try {
         const mailId = req.params.id;
-        const { viewed } = req.body;
+        const { readBySender, readByReceiver } = req.body;
 
-        const result = await Mails.update({ viewed }, { where: { id:mailId }});
+        let result;
+
+        if(readBySender) {
+          result = await Mails.update({ readBySender }, { where: { id:mailId }});
+        }else {
+          result = await Mails.update({ readByReceiver }, { where: { id:mailId }});
+        }
 
         res.status(201).json({ success: true, result, message: `Successfully viewed status updated!` });
     }catch(error) {

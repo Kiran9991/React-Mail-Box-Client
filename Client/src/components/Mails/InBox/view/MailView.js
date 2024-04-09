@@ -41,7 +41,7 @@ const MailView = () => {
           {path.includes('inbox') ? mail.sender : mail.receiver}
         </Col>
         <Col sm={4} style={{ color: "#8b8585", fontSize: "14px" }}>
-          {formatDate(mail.updatedAt) || ""}
+          {formatDate(mail.updatedAt)}
         </Col>
       </Row>
       <Row

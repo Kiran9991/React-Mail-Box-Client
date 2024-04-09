@@ -26,7 +26,8 @@ const ComposeMail = () => {
       receiver: to,
       subject,
       message,
-      viewed:"0",
+      readBySender: false,
+      readByReceiver: false
     };
 
     try {

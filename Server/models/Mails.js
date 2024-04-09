@@ -13,7 +13,8 @@ const Mails = sequelize.define('mails', {
     subject: Sequelize.STRING,
     message: Sequelize.STRING(1000),
     media: Sequelize.BLOB,
-    viewed: Sequelize.STRING
+    readBySender: Sequelize.BOOLEAN,
+    readByReceiver: Sequelize.BOOLEAN
 })
 
 module.exports = Mails;

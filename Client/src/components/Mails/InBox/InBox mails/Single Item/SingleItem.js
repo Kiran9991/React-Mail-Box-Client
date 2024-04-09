@@ -24,10 +24,9 @@ const SingleItem = (props) => {
     return `${day} ${month}`;
   };
 
-  const sendIsView = async () => {
-    const obj = { viewed: true };
-    const sendReadApi = async () => {
-      await fetch(`http://localhost:4000/mail/mail-view/${id}`, {
+  const markAsRead = async () => {
+    const sendReadApi = async (obj) => {
+      await fetch(`http://localhost:4000/mail/read/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -36,8 +35,11 @@ const SingleItem = (props) => {
       });
     };
     if (path.includes("inbox")) {
-      sendReadApi();
-      dispatch(mailActions.changeViewed(id));
+      sendReadApi({ readByReceiver: true });
+      dispatch(mailActions.updateReceivedMailReadStatus(id));
+    }else {
+      sendReadApi({ readBySender: true });
+      dispatch(mailActions.updateSentMailReadStatus(id));
     }
   };
 
@@ -70,12 +72,12 @@ const SingleItem = (props) => {
 
   return (
     <div
-      className={read === "0" ? inBox.mailUlActive : inBox.mailUl}
-      onClick={sendIsView}
+      className={!read ? inBox.mailUlActive : inBox.mailUl}
+      onClick={markAsRead}
     >
       <div className={inBox.mailDiv}>
-        <div>{read === "0" && <Badge bg="primary"> </Badge>}</div>
-        <div className={read === "0" ? inBox.sender : inBox.title}>{title}</div>
+        <div>{!read && <Badge bg="primary"> </Badge>}</div>
+        <div className={!read ? inBox.sender : inBox.title}>{title}</div>
         <div className={inBox.subject}>{subject}</div>
       </div>
       <div className={inBox.mailRightSide}>

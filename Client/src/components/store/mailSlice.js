@@ -12,9 +12,13 @@ const mailSlice = createSlice({
     updateInBox: (state, action) => {
       state.inBox = [...action.payload];
     },
-    changeViewed: (state, action) => {
+    updateReceivedMailReadStatus: (state, action) => {
       const singleItem = state.inBox.find((item) => item.id === action.payload);
-      singleItem.viewed = "1";
+      singleItem.readByReceiver = true;
+    },
+    updateSentMailReadStatus: (state, action) => {
+      const singleItem = state.sendedMails.find((item) => item.id === action.payload);
+      singleItem.readBySender = true;
     },
     sendMails: (state, action) => {
       if (Array.isArray(action.payload)) {

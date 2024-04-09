@@ -107,7 +107,8 @@ const Login = () => {
             </div>
 
             <p className="text-end mt-2 mb-0">
-              Forgot <Link to="/forgotpassword">Password?</Link><Link className="ms-2" to="/signup">Sign up</Link>
+              Forgot <Link to="/forgotpassword">Password?</Link>
+              <Link className="ms-2" to="/signup">Sign up</Link>
             </p>
           </Form>
         </Col>

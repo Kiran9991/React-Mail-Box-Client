@@ -12,7 +12,7 @@ router.get('/drafts', middleWare.auth, controller.getSenderMails);
 
 router.get('/mail-box', middleWare.auth, controller.getReceiverMails);
 
-router.put('/mail-view/:id', controller.markAsRead);
+router.put('/read/:id', controller.markAsRead);
 
 router.delete('/delete/:id', middleWare.auth, controller.deleteMail);
 
