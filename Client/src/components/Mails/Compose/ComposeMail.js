@@ -30,6 +30,11 @@ const ComposeMail = () => {
       readByReceiver: false
     };
 
+    if(obj.subject.length > 30) {
+      alert(`Please use words within 30 length`)
+      return
+    }
+
     try {
       const res = await fetch("http://localhost:4000/mail/send-mail", {
         method: "POST",

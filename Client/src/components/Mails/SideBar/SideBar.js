@@ -1,11 +1,16 @@
-import { Col, Button, ListGroup } from "react-bootstrap";
+import { Col, Button, ListGroup, Badge } from "react-bootstrap";
 import { useHistory, Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import sideBar from "./SideBar.module.css";
 
 const SideBar = () => {
   const history = useHistory();
   const location = useLocation();
+  const receivedMails = useSelector((state) => state.mail.inBox);
+  const sentMails = useSelector((state) => state.mail.sendedMails);
+  let mailsQuantity = receivedMails.length || "";
+  let sentMailsQuantity = sentMails.length || "";
 
   const isActivePath = (path) => {
     return location.pathname.includes(path) ? sideBar.active : "";
@@ -40,6 +45,22 @@ const SideBar = () => {
                 key={item.id}
               >
                 {item.text}
+                {item.id === 1 && (
+                  <Badge
+                    bg="danger"
+                    style={{ borderRadius: "30px", marginLeft: "2px" }}
+                  >
+                    {mailsQuantity}
+                  </Badge>
+                )}
+                {item.id === 3 && (
+                  <Badge
+                    bg="danger"
+                    style={{ borderRadius: "30px", marginLeft: "2px" }}
+                  >
+                    {sentMailsQuantity}
+                  </Badge>
+                )}
               </Link>
             </div>
           ))}

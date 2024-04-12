@@ -76,7 +76,7 @@ const SingleItem = (props) => {
       onClick={markAsRead}
     >
       <div className={inBox.mailDiv}>
-        <div>{!read && <Badge bg="primary"> </Badge>}</div>
+        <div style={{ marginLeft: '5px' }}>{!read && <Badge bg="primary" style={{ padding: '6px' }}> </Badge>}</div>
         <div className={!read ? inBox.sender : inBox.title}>{title}</div>
         <div className={inBox.subject}>{subject}</div>
       </div>

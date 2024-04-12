@@ -49,10 +49,13 @@ export const storeSenderMailsData = (token) => {
         },
       });
       const data = await res.json();
-      dispatch(mailActions.sendMails(data.userMails));
+      return data.userMails;
     };
     try {
-      await getSenderMails();
+      const result = await getSenderMails();
+      const sentMails = [...result || ''];
+      sentMails.sort((a,b) => b.id - a.id);
+      dispatch(mailActions.sendMails(sentMails));
     } catch (error) {
       console.log(error);
       // alert(error);
@@ -70,17 +73,20 @@ export const storeReceiverMailsData = (token) => {
           Authorization: `${token}`,
         },
       });
-
       const data = await res.json();
-      const receivedMails = [...data.receiverMails || ''];
-      receivedMails.sort((a, b) => b.id - a.id);
-      dispatch(mailActions.updateInBox(receivedMails));
+      if(res.ok) {
+        return data.receiverMails;
+      }
     };
 
-    await getReceiverMailsData();
-
     try {
-      getReceiverMailsData();
+      setInterval(async() => {
+      const result = await getReceiverMailsData();
+      const receivedMails = [...result || ''];
+      receivedMails.sort((a, b) => b.id - a.id);
+      console.log('api call')
+      dispatch(mailActions.updateInBox(receivedMails));
+      }, 1000)
     } catch (error) {
       console.log(error);
     }
