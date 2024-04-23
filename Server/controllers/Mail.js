@@ -44,7 +44,7 @@ const getSenderMails = async (req, res) => {
       return res.status(401).json({ message: `Your Draft is Empty!` });
     }
 
-    res.status(201).json({ success: true, userMails });
+    res.status(201).json({ success: true, data: userMails });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: `Something went wrong!` });
@@ -63,7 +63,7 @@ const getReceiverMails = async (req, res) => {
       return res.status(401).json({ message: "Your inbox is Empty!" });
     }
 
-    res.status(201).json({ success: true, receiverMails });
+    res.status(201).json({ success: true, data: receiverMails });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: `Something went wrong!` });

@@ -6,11 +6,11 @@ const controller = require('../controllers/Mail');
 
 const middleWare = require('../middleware/auth');
 
-router.post('/send-mail', middleWare.auth, controller.composeMail);
+router.post('/compose', middleWare.auth, controller.composeMail);
 
-router.get('/drafts', middleWare.auth, controller.getSenderMails);
+router.get('/sent', middleWare.auth, controller.getSenderMails);
 
-router.get('/mail-box', middleWare.auth, controller.getReceiverMails);
+router.get('/inbox', middleWare.auth, controller.getReceiverMails);
 
 router.put('/read/:id', controller.markAsRead);
 

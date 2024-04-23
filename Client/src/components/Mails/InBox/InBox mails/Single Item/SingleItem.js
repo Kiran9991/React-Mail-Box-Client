@@ -3,7 +3,8 @@ import inBox from "./SingleItem.module.css";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-import { mailActions } from "../../../../store/mailSlice";
+import { mailActions } from "../../../../store/mail-slice";
+import formatDate from "../../../../custom hooks/formateDate";
 
 const SingleItem = (props) => {
   const { id, title, read, date, subject } = props;
@@ -12,17 +13,6 @@ const SingleItem = (props) => {
   let path = location.pathname;
 
   const dispatch = useDispatch();
-
-  const formattedDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.toLocaleString("en-US", {
-      month: "short",
-      hour: "2-digit",
-      minute: "numeric",
-    });
-    return `${day} ${month}`;
-  };
 
   const markAsRead = async () => {
     const sendReadApi = async (obj) => {
@@ -37,7 +27,7 @@ const SingleItem = (props) => {
     if (path.includes("inbox")) {
       sendReadApi({ readByReceiver: true });
       dispatch(mailActions.updateReceivedMailReadStatus(id));
-    }else {
+    } else {
       sendReadApi({ readBySender: true });
       dispatch(mailActions.updateSentMailReadStatus(id));
     }
@@ -76,7 +66,13 @@ const SingleItem = (props) => {
       onClick={markAsRead}
     >
       <div className={inBox.mailDiv}>
-        <div style={{ marginLeft: '5px' }}>{!read && <Badge bg="primary" style={{ padding: '6px' }}> </Badge>}</div>
+        <div style={{ marginLeft: "5px" }}>
+          {!read && (
+            <Badge bg="primary" style={{ padding: "6px" }}>
+              {" "}
+            </Badge>
+          )}
+        </div>
         <div className={!read ? inBox.sender : inBox.title}>{title}</div>
         <div className={inBox.subject}>{subject}</div>
       </div>
@@ -86,7 +82,7 @@ const SingleItem = (props) => {
             Delete
           </button>
         </div>
-        <div className={inBox.date}>{formattedDate(date)}</div>
+        <div className={inBox.date}>{formatDate(date)}</div>
       </div>
     </div>
   );

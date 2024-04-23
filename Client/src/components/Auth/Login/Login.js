@@ -1,32 +1,33 @@
-import { useRef, useState } from "react";
-import { Button, Form, Container, Row, Col } from "react-bootstrap";
-import { Link, useHistory } from 'react-router-dom';
+import {  useRef, useState } from "react";
+import { Container, Button, Row, Col, Form } from "react-bootstrap";
+import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 
-const Signup = () => {
+import { userActions } from "../../store/user-slice";
+import Loading from "../Loader/Loading";
+
+const Login = () => {
   const [isSending, setIsSending] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const emailRef = useRef();
   const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
 
   const submitFormHandler = async (e) => {
     e.preventDefault();
-
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    const confirmPassword = confirmPasswordRef.current.value;
 
     const obj = {
       email,
       password,
-      confirmPassword,
     };
 
     setIsSending(true);
 
     try {
-      const res = await fetch("http://localhost:4000/user/signup", {
+      const res = await fetch("http://localhost:4000/user/login", {
         method: "POST",
         body: JSON.stringify(obj),
         headers: {
@@ -35,13 +36,13 @@ const Signup = () => {
       });
 
       const data = await res.json();
-
       if (res.ok) {
         alert(data.message);
+        localStorage.setItem('userName', data.email);
         emailRef.current.value = "";
         passwordRef.current.value = "";
-        confirmPasswordRef.current.value = "";
-        history.replace('./login');
+        history.replace('/');
+        dispatch(userActions.setLoginStatus(true))
       }else {
         if(data.message.includes('Email')) {
           emailRef.current.value = "";
@@ -51,15 +52,16 @@ const Signup = () => {
         }
       }
 
-      console.log(data);
+      localStorage.setItem('token', data.idToken);
+      
     } catch (error) {
       console.log(error);
       alert(`Error: ${error.message}`)
     }
-      passwordRef.current.value = "";
-      confirmPasswordRef.current.value = "";
 
     setIsSending(false);
+
+    passwordRef.current.value = "";
   };
 
   return (
@@ -75,7 +77,7 @@ const Signup = () => {
             onSubmit={submitFormHandler}
           >
             <Form.Group className="mb-3 text-center" controlId="formTitle">
-              <Form.Label className="h3">Signup</Form.Label>
+              <Form.Label className="h3">Login</Form.Label>
             </Form.Group>
 
             <Form.Group className="mb-3">
@@ -96,25 +98,11 @@ const Signup = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Enter confirm password"
-                ref={confirmPasswordRef}
-              />
-            </Form.Group>
+            <Loading isSending={isSending} buttonText={'Login'} loadingText={'Logging up...'}/>
 
-            <div className="d-grid gap-2">
-              {!isSending && (
-                <Button variant="primary" type="submit" className="mt-3">
-                  Sign Up
-                </Button>
-              )}
-              {isSending && <p style={{"textAlign":"center"}}>Signing Up...</p>}
-            </div>
             <p className="text-end mt-2 mb-0">
-              Already Registerd <Link className="ms-2" to="/login">Login</Link>
+              Forgot <Link to="/forgotpassword">Password?</Link>
+              <Link className="ms-2" to="/signup">Sign up</Link>
             </p>
           </Form>
         </Col>
@@ -123,4 +111,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;

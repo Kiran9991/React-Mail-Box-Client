@@ -5,7 +5,7 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useDispatch } from 'react-redux';
 
-import { mailActions } from "../../store/mailSlice";
+import { mailActions } from "../../store/mail-slice";
 
 const ComposeMail = () => {
   const token = localStorage.getItem("token");
@@ -36,7 +36,7 @@ const ComposeMail = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/mail/send-mail", {
+      const res = await fetch("http://localhost:4000/mail/compose", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,6 +51,9 @@ const ComposeMail = () => {
       console.log("successfully posted mail", data);
       alert("successfully sended mail");
       dispatch(mailActions.sendMails(data.mail));
+      toRef.current.value = '';
+      subjectRef.current.value = '';
+      setEditorState('');
     } catch (error) {
       console.log(error);
       alert(error);

@@ -12,31 +12,31 @@ const signup = async (req, res) => {
     const user = await User.findOne({ where: { email: email } });
 
     if (!email.includes("@") || !email.includes(".")) {
-      return res.status(401).json({ message: `Email is Invalid!` });
+      return res.status(401).json({ success: false, message: `Email is Invalid!` });
     }
 
     if (user) {
-      return res.status(401).json({ message: `Email Already Exists!` });
+      return res.status(401).json({ success: false, message: `Email Already Exists!` });
     }
 
     if (password.length < 6) {
-      return res.status(401).json({ message: `Password is invalid!` });
+      return res.status(401).json({ success: false, message: `Password is invalid!` });
     }
 
     if (password !== confirmPassword) {
       return res
         .status(401)
-        .json({ message: `Confirm password doesn't matched` });
+        .json({ success: false, message: `Confirm password doesn't matched` });
     }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const newUser = await User.create({ email, password: hashedPassword });
 
-    res.status(201).json({ message: "User created Successfully", user: newUser });
+    res.status(201).json({ success: true, message: "User created Successfully", user: newUser });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Internal Server Error!" });
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
   }
 };
 
